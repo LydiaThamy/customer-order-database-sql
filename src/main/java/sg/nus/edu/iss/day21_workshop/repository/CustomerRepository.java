@@ -19,5 +19,10 @@ public class CustomerRepository {
     public List<Customer> getAllCustomers(int limit, int offset) {
         return template.query(findAllSql, BeanPropertyRowMapper.newInstance(Customer.class), limit, offset);
     }
-    
+
+    private final String findSqlById = "select * from customers where id = ?";
+    public Customer getCustomerById(int id) {
+        return template.queryForObject(findSqlById, BeanPropertyRowMapper.newInstance(Customer.class), id);
+    }
+
 }

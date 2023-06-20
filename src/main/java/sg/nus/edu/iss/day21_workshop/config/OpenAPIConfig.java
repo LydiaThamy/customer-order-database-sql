@@ -13,8 +13,8 @@ public class OpenAPIConfig {
     public OpenAPI OpenAPI() {
         return new OpenAPI()
             .info(new Info()
-                .title("My PAF Day21 API on Swagger")
-                .description("PAF Day21")
+                .title("My PAF Day21 Workshop API on Swagger")
+                .description("PAF Day21 Workshop")
                 .version("Version 1.0"));
     }
 

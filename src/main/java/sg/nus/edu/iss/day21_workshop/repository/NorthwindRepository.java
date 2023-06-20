@@ -8,9 +8,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import sg.nus.edu.iss.day21_workshop.model.Customer;
+import sg.nus.edu.iss.day21_workshop.model.Order;
 
 @Repository
-public class CustomerRepository {
+public class NorthwindRepository {
 
     @Autowired
     private JdbcTemplate template;
@@ -25,4 +26,8 @@ public class CustomerRepository {
         return template.queryForObject(findSqlById, BeanPropertyRowMapper.newInstance(Customer.class), id);
     }
 
+    private final String findSqlByCustomerId = "select * from orders where customer_id = ?";
+    public List<Order> getOrdersByCustomerId(int customerId) {
+        return template.query(findSqlByCustomerId, BeanPropertyRowMapper.newInstance(Order.class), customerId);
+    }
 }

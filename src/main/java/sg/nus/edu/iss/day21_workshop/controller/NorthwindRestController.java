@@ -13,18 +13,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import sg.nus.edu.iss.day21_workshop.model.Customer;
-import sg.nus.edu.iss.day21_workshop.service.CustomerService;
+import sg.nus.edu.iss.day21_workshop.model.Order;
+import sg.nus.edu.iss.day21_workshop.service.NorthwindService;
 
 @RestController
 @RequestMapping(path = "/api/customer", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CustomerRestController {
+public class NorthwindRestController {
 
     @Autowired
-    private CustomerService customerService;
+    private NorthwindService service;
     
     @GetMapping
     public ResponseEntity<List<Customer>> getAllCustomers(@RequestParam(name = "limit", defaultValue = "5") Integer limit, @RequestParam(name = "offset", defaultValue = "0") Integer offset) {
-        List<Customer> customers = new ArrayList<>(customerService.getAllCustomers(limit, offset));
+        List<Customer> customers = new ArrayList<>(service.getAllCustomers(limit, offset));
 
         if (customers.isEmpty())
             return ResponseEntity.notFound().build();
@@ -34,12 +35,22 @@ public class CustomerRestController {
 
     @GetMapping("/{customer-id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable("customer-id") int customerId) {
-        Customer customer = customerService.getCustomerById(customerId);
+        Customer customer = service.getCustomerById(customerId);
 
         if (customer == null)
             return ResponseEntity.notFound().build();
             
         return ResponseEntity.ok().body(customer);
+    }
+
+    @GetMapping("/{customer-id}/orders")
+    public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable("customer-id") int customerId) {
+        List<Order> orders = service.getOrdersByCustomerId(customerId);
+
+        if (orders.isEmpty())
+            return ResponseEntity.notFound().build();
+            
+        return ResponseEntity.ok().body(orders);
     }
 
 }
